@@ -82,7 +82,7 @@ The unit of translation (Segment) is a run of consecutive inline nodes inside on
 
 ## Selection translation
 
-- If there is a selection after `mouseup`, a round translate button appears at the bottom right of the selection's last rectangle. Selections inside form fields and inside the extension's UI are ignored.
+- If there is a selection after `mouseup`, a translate button showing the extension's icon appears at the bottom right of the selection's last rectangle. The icon's SVG is written into the content script instead of loaded from `icons/`, because loading it would require listing the file in `web_accessible_resources`, which lets any page detect the extension. Selections inside form fields and inside the extension's UI are ignored.
 - Clicking the button opens a card below the selection with the translation, a copy button, and a close button. It shows a loading state while waiting. On failure it shows the reason and a link to the options page.
 - A long selection is split into paragraphs at blank lines and translated in chunks of about 1500 characters, one after another, then joined.
 - `Escape`, a click outside the card, or a new selection closes it. Scrolling does not close it, and it stays attached to the selection.

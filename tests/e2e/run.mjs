@@ -196,6 +196,12 @@ try {
     await reference.click('#plain', { clickCount: 3 });
     const trigger = reference.locator('plamo-translator-ui .trigger');
     await trigger.waitFor({ state: 'visible' });
+    const box = await trigger.boundingBox();
+    const clip = { x: Math.max(0, box.x - 160), y: Math.max(0, box.y - 60), width: 220, height: 110 };
+    await reference.screenshot({ path: path.join(OUT, 'selection-button.png'), clip });
+    await reference.emulateMedia({ colorScheme: 'dark' });
+    await reference.screenshot({ path: path.join(OUT, 'selection-button-dark.png'), clip });
+    await reference.emulateMedia({ colorScheme: 'light' });
     await trigger.click();
     const body = reference.locator('plamo-translator-ui .card .body:not(.loading)');
     await body.waitFor({ timeout: TIMEOUT });

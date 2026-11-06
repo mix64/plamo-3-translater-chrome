@@ -3,7 +3,7 @@
 A Chrome extension that translates web pages in place with a PLaMo translation model (such as `plamo-3-translate`) served through an OpenAI-compatible API, for example by llama.cpp.
 
 - **Page translation.** Replaces the text of the current page with its translation. Links and bold text stay in place, and one click restores the original.
-- **Selection translation.** Select some text and a small 訳 button appears. Click it to open a card with the translation below the selection.
+- **Selection translation.** Select some text and a small button with the extension's icon appears. Click it to open a card with the translation below the selection.
 
 The extension's UI is in Japanese, so the labels below are quoted as they appear on screen, with an English gloss.
 
@@ -56,7 +56,7 @@ The following is never translated.
 
 ### Selection translation
 
-Select some text and a round 訳 button appears at the bottom right of the selection. Click it to open a card with the translation below the selection. **コピー** (Copy) on the card copies the translation.
+Select some text and a button with the extension's icon appears at the bottom right of the selection. Click it to open a card with the translation below the selection. **コピー** (Copy) on the card copies the translation.
 
 You can also open the card with **選択した文章を翻訳** (Translate selected text) in the context menu or with `Alt+Shift+S`. The card closes on `Escape`, on a click outside it, or on a new selection.
 
@@ -88,7 +88,7 @@ npm run smoke -- https://example.com/article
 
 `LLM_BASE_URL` also sets the LLM URL for `npm run measure-tags` and `npm run smoke`. `LLM_MODEL` sets the model name for `npm run smoke` (default `plamo-3-translate-0.8b`).
 
-The icon source is `icons/icon.svg`. `npm run icons` renders it into the PNG sizes `manifest.json` uses, with Playwright's Chromium.
+The icon source is `icons/icon.svg`. `npm run icons` renders it into the PNG sizes `manifest.json` uses, with Playwright's Chromium. The selection button draws the same SVG from a copy in `src/content/selection-popup.js`, so update both when the icon changes.
 
 ## Files
 

@@ -1,13 +1,29 @@
 (() => {
   const CHUNK_LIMIT = 1500;
 
+  // Same drawing as icons/icon.svg. Inlined so pages cannot load the extension's files.
+  const ICON = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" aria-hidden="true">
+      <defs>
+        <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#3b82f6"/>
+          <stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient>
+      </defs>
+      <rect width="128" height="128" rx="28" fill="url(#tile)"/>
+      <path d="M22 12h42a12 12 0 0 1 12 12v28a12 12 0 0 1-12 12H36l-18 14v-14a12 12 0 0 1-8-12V24a12 12 0 0 1 12-12z" fill="#fff" fill-opacity=".55"/>
+      <path d="M31 52 43 22 55 52M36.5 42h13" fill="none" stroke="#1e3a8a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M62 56h44a12 12 0 0 1 12 12v26a12 12 0 0 1-12 12h-2v14l-18-14H62a12 12 0 0 1-12-12V68a12 12 0 0 1 12-12z" fill="#fff"/>
+      <path d="M64 72h40M64 83h32M64 94h22" fill="none" stroke="#6d28d9" stroke-width="7" stroke-linecap="round"/>
+    </svg>`;
+
   const CSS = `
     .trigger {
       position: absolute; width: 28px; height: 28px; padding: 0; margin: 0;
-      border: none; border-radius: 50%; cursor: pointer;
-      background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow);
-      font: bold 14px/28px var(--font); text-align: center;
+      border: none; border-radius: 7px; cursor: pointer; overflow: hidden;
+      background: none; box-shadow: var(--shadow);
     }
+    .trigger svg { display: block; width: 100%; height: 100%; }
     .trigger:hover { filter: brightness(1.1); }
     .card {
       position: absolute; width: min(380px, calc(100vw - 32px)); box-sizing: border-box;
@@ -69,8 +85,9 @@
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = 'trigger';
-    trigger.textContent = '訳';
+    trigger.innerHTML = ICON;
     trigger.title = '選択した文章を翻訳';
+    trigger.setAttribute('aria-label', '選択した文章を翻訳');
     trigger.hidden = true;
     const card = document.createElement('div');
     card.className = 'card';
