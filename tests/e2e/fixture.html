@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Field Notes on Rivers</title>
+  <style>
+    body { font: 16px/1.6 Georgia, serif; max-width: 760px; margin: 0 auto; padding: 24px; color: #222; }
+    nav ul { display: flex; gap: 16px; list-style: none; padding: 0; }
+    pre { background: #f3f3f3; padding: 12px; }
+    .aside { border-left: 4px solid #ccc; padding-left: 12px; color: #555; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a id="nav-home" href="/home">Home</a></li>
+      <li><a id="nav-about" href="/about">About us</a></li>
+      <li><a id="nav-contact" href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h1 id="heading">How rivers shape the land</h1>
+    <p id="intro">
+      Rivers carry sand and stones from the mountains to the sea. Read the
+      <a id="doc-link" href="https://example.com/rivers">field guide</a> for
+      <strong>more details</strong> about how valleys form.
+    </p>
+    <p id="plain">Over thousands of years, a small stream can cut a deep canyon through solid rock. The water moves slowly, but it never stops working.</p>
+    <p id="broken-tags">Read the <a id="api-link" href="/api">documentation</a> for <b>more details</b> about the API.</p>
+    <p id="nested">Visit <a id="site-link" href="/site">our <b>official</b> website</a> for updates.</p>
+    <p id="nested-format">Visit <b>our <em>official</em> website</b> for updates.</p>
+    <p id="with-code">To download the data, run <code id="cmd">npm install rivers</code> in your terminal.</p>
+    <pre id="code-block">function flow(river) {
+  return river.speed * river.depth;
+}</pre>
+    <p id="no-translate" translate="no">Mississippi River Basin Survey</p>
+    <p id="japanese">この段落はすでに日本語で書かれています。</p>
+    <div id="late-container"></div>
+    <details id="more">
+      <summary>More about deltas</summary>
+      <p id="hidden">A delta forms where a river slows down and drops the sand it has carried from upstream.</p>
+    </details>
+    <section id="long"></section>
+  </main>
+  <script>
+    const features = ['delta', 'floodplain', 'meander', 'estuary', 'tributary', 'waterfall', 'gorge', 'oxbow lake', 'levee', 'watershed'];
+    document.getElementById('long').innerHTML = Array.from({ length: 60 }, (_, i) => {
+      const n = i + 1;
+      const feature = features[i % features.length];
+      const link = n % 5 === 0 ? ` Read <a id="report-${n}" href="/reports/${n}">the full report</a> for the details.` : '';
+      return `<p id="long-${n}">Survey ${n} looked at a ${feature} that changes a little every season, and the people who live nearby keep a close watch on the water.${link}</p>`;
+    }).join('');
+    setTimeout(() => {
+      const p = document.createElement('p');
+      p.id = 'late';
+      p.className = 'aside';
+      p.textContent = 'This note was added after the page finished loading.';
+      document.getElementById('late-container').append(p);
+    }, 2500);
+  </script>
+</body>
+</html>

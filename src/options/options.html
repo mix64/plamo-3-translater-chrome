@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLaMo 翻訳の設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>PLaMo 翻訳の設定</h1>
+    <form id="form">
+      <section>
+        <h2>翻訳に使う LLM</h2>
+        <label>
+          <span>API の URL</span>
+          <input name="baseUrl" type="url" required placeholder="http://localhost:8080/v1">
+          <small>OpenAI 互換の API の URL。<code>/chat/completions</code> の手前まで書きます。</small>
+        </label>
+        <label>
+          <span>API キー</span>
+          <input name="apiKey" type="password" autocomplete="off" placeholder="不要なら空のまま">
+        </label>
+        <label>
+          <span>モデル名</span>
+          <span class="row">
+            <input name="model" list="models" placeholder="空なら指定しない">
+            <button type="button" id="fetch-models">モデル一覧を取得</button>
+          </span>
+          <datalist id="models"></datalist>
+          <small>空のときはリクエストに <code>model</code> を含めません（llama.cpp は読み込み済みのモデルを使います）。</small>
+        </label>
+        <label>
+          <span>プロンプトの方式</span>
+          <select name="promptStyle">
+            <option value="auto">自動（モデル名に plamo を含めば PLaMo 用）</option>
+            <option value="plamo">PLaMo 翻訳モデル（target_lang を渡す）</option>
+            <option value="generic">汎用のチャットモデル（指示文を付ける）</option>
+          </select>
+        </label>
+      </section>
+      <section>
+        <h2>翻訳</h2>
+        <label>
+          <span>訳先の言語</span>
+          <select name="targetLang"></select>
+        </label>
+        <label>
+          <span>同時リクエスト数</span>
+          <input name="concurrency" type="number" min="1" max="16" step="1">
+          <small>ページ翻訳で同時に送るリクエストの上限。</small>
+        </label>
+        <label class="check">
+          <input name="showSelectionButton" type="checkbox">
+          <span>文章を選んだときに翻訳ボタンを出す</span>
+        </label>
+      </section>
+      <div class="actions">
+        <button type="submit" class="primary">保存</button>
+        <button type="button" id="test">接続テスト</button>
+      </div>
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>
