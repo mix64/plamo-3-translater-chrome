@@ -6,7 +6,9 @@ A Manifest V3 Chrome extension. There is no build step. The sources are loaded a
 
 1. **Page translation.** Replaces the text of the current page in place with its translation into the configured target language (Japanese by default). The original can be restored.
 2. **Selection translation.** Selecting text shows a small translate button at the bottom right of the selection. Clicking it opens a card with the translation below the selection, the same flow as the DeepL extension. The context menu and a shortcut open it too.
-3. **Options page.** Sets the API URL, API key, model name, target language, prompt style, number of concurrent requests, and whether the selection button is shown.
+3. **Options page.** Sets the API URL, API key, model name, target language, number of concurrent requests, and whether the selection button is shown.
+
+The translation model is a PLaMo translation model served through an OpenAI-compatible API (for example llama.cpp). Other chat models are not supported.
 
 ## Structure
 
@@ -29,14 +31,7 @@ Content scripts cannot be loaded as modules. They are listed in order in `conten
 
 Only the service worker talks to the LLM. A content script sends `chrome.runtime.sendMessage({ type: 'translate', text })` and receives `{ ok: true, text }` or `{ ok: false, error }`. This keeps requests free of the page's CSP and mixed-content restrictions.
 
-The body sent to `POST {baseUrl}/chat/completions` depends on the prompt style. Styles live in a registry table, so the branching is not scattered.
-
-| Style | messages | Extra fields |
-| --- | --- | --- |
-| `plamo` | `[{ role: 'user', content: text }]` | `chat_template_kwargs: { target_lang }` |
-| `generic` | `[{ role: 'system', content: instructions }, { role: 'user', content: text }]` | none |
-
-The `promptStyle` setting is `auto`, `plamo`, or `generic`. `auto` resolves to `plamo` when the model name contains `plamo`, and to `generic` otherwise. The `generic` instructions ask for the target language, a reply containing only the translation, and tags of the form `<g id="0">…</g>` kept in place. The official OpenAI API rejects unknown fields with a 400, so `chat_template_kwargs` is sent only in the `plamo` style.
+`POST {baseUrl}/chat/completions` receives `messages: [{ role: 'user', content: text }]`, `chat_template_kwargs: { target_lang }`, and `temperature: 0`, plus `model` when one is set.
 
 What the PLaMo translation model (served by llama.cpp) does:
 
@@ -103,7 +98,6 @@ Stored in `chrome.storage.sync`.
 | `apiKey` | Empty. Sent as `Authorization: Bearer` when not empty |
 | `model` | Empty. When empty, `model` is not sent (llama.cpp uses the loaded model) |
 | `targetLang` | `ja` |
-| `promptStyle` | `auto` |
 | `concurrency` | `4` |
 | `showSelectionButton` | `true` |
 
@@ -113,5 +107,5 @@ The options page has a button that fetches the model list (`GET {baseUrl}/models
 
 - `npm test` runs the unit tests for `markup.js`.
 - `npm run e2e` loads the extension into Playwright's Chromium, opens a test page, and runs page translation, restoring the original, and selection translation against a real LLM. For page translation it checks sentences whose tags the model tends to break, a paragraph inside a closed `details`, that the paragraph in view is translated first after scrolling to the end of a long page, and that no tag-like text shows on screen. The LLM URL comes from the `LLM_BASE_URL` environment variable.
-- `npm run measure-tags` sends 20 sentences containing inline elements to the LLM in the `plamo` style. It prints how many sentences came back with their tags intact and how many tags `parse` kept. Use it as the yardstick when changing the tag format or `parse`.
+- `npm run measure-tags` sends 20 sentences containing inline elements to the LLM the same way the extension does. It prints how many sentences came back with their tags intact and how many tags `parse` kept. Use it as the yardstick when changing the tag format or `parse`.
 - `npm run smoke` translates real pages in Chromium with the extension loaded (one Wikipedia page and one MDN page by default, or URLs passed as arguments). It prints the seconds until the page reaches `translated`, the number of visible `<p>` left untranslated, and page errors, once at the top of the page and once after scrolling to the end. It also checks that restoring works, and saves screenshots to `tests/e2e/out/`.

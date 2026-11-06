@@ -1,5 +1,5 @@
 import { loadSettings, saveSettings, normalizeSettings } from '../shared/settings.js';
-import { LANGUAGES, listModels, resolvePromptStyle, translate } from '../llm.js';
+import { LANGUAGES, listModels, translate } from '../llm.js';
 
 const form = document.getElementById('form');
 const message = document.getElementById('message');
@@ -20,7 +20,6 @@ function readForm() {
     apiKey: fields.apiKey.value,
     model: fields.model.value,
     targetLang: fields.targetLang.value,
-    promptStyle: fields.promptStyle.value,
     concurrency: fields.concurrency.value,
     showSelectionButton: fields.showSelectionButton.checked,
   });
@@ -62,7 +61,7 @@ document.getElementById('test').addEventListener('click', async () => {
   try {
     const result = await translate(settings, sample);
     const seconds = ((performance.now() - started) / 1000).toFixed(2);
-    show(`成功（${seconds} 秒、方式: ${resolvePromptStyle(settings)}）\n${sample}\n→ ${result}`, 'ok');
+    show(`成功（${seconds} 秒）\n${sample}\n→ ${result}`, 'ok');
   } catch (e) {
     show(`失敗しました。\n${e.message}`, 'error');
   }

@@ -35,7 +35,7 @@ const toNode = (part) =>
     ? { nodeType: 3, nodeValue: part }
     : { nodeType: 1, localName: 'span', getAttribute: () => null, childNodes: part.map(toNode) };
 
-const settings = { baseUrl: BASE_URL, model: '', targetLang: 'ja', promptStyle: 'plamo' };
+const settings = { baseUrl: BASE_URL, model: '', targetLang: 'ja' };
 let intact = 0;
 let kept = 0;
 let total = 0;

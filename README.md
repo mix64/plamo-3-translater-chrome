@@ -1,6 +1,6 @@
 # PLaMo Translator (Chrome extension)
 
-A Chrome extension that translates web pages in place with any LLM that exposes an OpenAI-compatible API. It is built for PLaMo translation models (such as `plamo-3-translate`) served by llama.cpp, and works with other OpenAI-compatible models too.
+A Chrome extension that translates web pages in place with a PLaMo translation model (such as `plamo-3-translate`) served through an OpenAI-compatible API, for example by llama.cpp.
 
 - **Page translation.** Replaces the text of the current page with its translation. Links and bold text stay in place, and one click restores the original.
 - **Selection translation.** Select some text and a small 訳 button appears. Click it to open a card with the translation below the selection.
@@ -27,17 +27,11 @@ Click the toolbar icon and choose **設定を開く** (Open settings), or open *
 | API URL | Everything before `/chat/completions`, e.g. `http://localhost:8080/v1` |
 | API key | Sent as `Authorization: Bearer` when not empty |
 | Model | Omitted from requests when empty. **モデル一覧を取得** (Fetch models) lists the models from `GET /models` |
-| Prompt style | **自動** (Auto) uses the PLaMo style when the model name contains `plamo`, and the generic style otherwise |
 | Target language | Japanese by default |
 | Concurrent requests | Maximum number of requests page translation sends at once (1 to 16, default 4) |
 | Show translate button | When off, selecting text shows no button. The context menu and the shortcut still work |
 
-The two prompt styles differ as follows.
-
-- **PLaMo translation model.** Sends only the text to translate as the user message, and passes the target language as `chat_template_kwargs: { target_lang }`.
-- **Generic chat model.** A system message asks for the target language, a reply containing only the translation, and tags of the form `<g id="0">…</g>` kept in place.
-
-If you run PLaMo on llama.cpp and leave the model name empty, set the prompt style to **PLaMo 翻訳モデル** (PLaMo translation model). With **自動** (Auto) the extension cannot tell from an empty model name and falls back to the generic style.
+Each request sends only the text to translate as the user message, and passes the target language as `chat_template_kwargs: { target_lang }` to the PLaMo chat template.
 
 When you have filled in the form, click **接続テスト** (Test connection) to translate a short English sentence, then click **保存** (Save).
 
@@ -94,7 +88,7 @@ npm run smoke -- https://example.com/article
 
 `LLM_BASE_URL` also sets the LLM URL for `npm run measure-tags` and `npm run smoke`. `LLM_MODEL` sets the model name for `npm run smoke` (default `plamo-3-translate-0.8b`).
 
-Regenerate the icons with `python scripts/make_icons.py` (requires Pillow and a Japanese font).
+The icon source is `icons/icon.svg`. `npm run icons` renders it into the PNG sizes `manifest.json` uses, with Playwright's Chromium.
 
 ## Files
 

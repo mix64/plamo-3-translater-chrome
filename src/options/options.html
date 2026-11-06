@@ -15,7 +15,7 @@
         <label>
           <span>API の URL</span>
           <input name="baseUrl" type="url" required placeholder="http://localhost:8080/v1">
-          <small>OpenAI 互換の API の URL。<code>/chat/completions</code> の手前まで書きます。</small>
+          <small>PLaMo 翻訳モデルを配信している OpenAI 互換の API（llama.cpp など）の URL。<code>/chat/completions</code> の手前まで書きます。</small>
         </label>
         <label>
           <span>API キー</span>
@@ -29,14 +29,6 @@
           </span>
           <datalist id="models"></datalist>
           <small>空のときはリクエストに <code>model</code> を含めません（llama.cpp は読み込み済みのモデルを使います）。</small>
-        </label>
-        <label>
-          <span>プロンプトの方式</span>
-          <select name="promptStyle">
-            <option value="auto">自動（モデル名に plamo を含めば PLaMo 用）</option>
-            <option value="plamo">PLaMo 翻訳モデル（target_lang を渡す）</option>
-            <option value="generic">汎用のチャットモデル（指示文を付ける）</option>
-          </select>
         </label>
       </section>
       <section>

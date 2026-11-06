@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PLaMo 翻訳",
-  "description": "OpenAI 互換の API で、ページ全体や選択した文章をその場で翻訳します。",
+  "description": "PLaMo 翻訳モデルで、ページ全体や選択した文章をその場で翻訳します。",
   "version": "0.1.0",
   "icons": {
     "16": "icons/icon16.png",
